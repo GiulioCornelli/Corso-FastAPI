@@ -1,4 +1,4 @@
-from Custom_Enum import Priority
+from Corso2.Custom_Enum import Priority
 from pydantic import BaseModel, Field
 from typing import Optional
 

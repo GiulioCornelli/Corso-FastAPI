@@ -1,7 +1,7 @@
-from fastapi import FastAPI
-from schema import Todo, TodoCreate, TodoUpdate, TodoBase
+from fastapi import FastAPI, HTTPException
+from Corso2.Schema import Todo, TodoCreate, TodoUpdate
 from typing import List
-from Custom_Enum import Priority
+from Corso2.Custom_Enum import Priority
 
 app = FastAPI()
 
@@ -30,7 +30,7 @@ def get_todo_byid(todo_id: int):
     for todo in all_todos:
         if todo.todo_id == todo_id:
             return todo
-    return {"message": "Todo not found"}
+    raise HTTPException(status_code=404, detail="Todo not found")
 
 @app.get("/todos", response_model=List[Todo])
 def get_todos(first_n : int = None): #specifichiamo un parametro opzionale che inseriremo nell' url host/todos?first_n=3
@@ -59,8 +59,9 @@ def update_todo(todo_id: int, updated_todo: TodoUpdate):
             todo.todo_description = updated_todo.todo_description
             todo.priority = updated_todo.priority
             return {"message": "Todo updated", "content": todo}
-        else:
-            return {"message": "Todo not found"}
+        
+    
+    raise HTTPException(status_code=404, detail="Todo not found")
 
 @app.delete("/todos/{todo_id}", response_model=Todo)
 def delete_todo(todo_id: int):
@@ -68,5 +69,6 @@ def delete_todo(todo_id: int):
         if todo.todo_id == todo_id:
             deleted_todo = all_todos.pop(index)
             return {"message": "Todo deleted", "content": deleted_todo}
-        else:
-            return {"message": "Todo not found"}
+        
+    
+    raise HTTPException(status_code=404, detail="Todo not found")

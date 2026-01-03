@@ -4,4 +4,4 @@ from enum import IntEnum
 class Priority(IntEnum):
     LOW = 3
     MEDIUM = 2
-    HIGT = 1
+    HIGH = 1
